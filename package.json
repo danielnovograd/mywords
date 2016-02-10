@@ -1,0 +1,23 @@
+{
+  "name": "mywordreal",
+  "version": "1.0.0",
+  "description": "words",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.13.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielnovograd/mywords.git"
+  },
+  "author": "dan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielnovograd/mywords/issues"
+  },
+  "homepage": "https://github.com/danielnovograd/mywords#readme"
+}
