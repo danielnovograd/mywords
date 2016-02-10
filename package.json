@@ -4,7 +4,8 @@
   "description": "words",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "nodemon": "^1.8.1"
   },
   "devDependencies": {},
   "scripts": {
