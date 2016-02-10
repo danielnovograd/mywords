@@ -4,8 +4,10 @@
   "description": "words",
   "main": "index.js",
   "dependencies": {
+    "bluebird": "^3.2.2",
     "express": "^4.13.4",
-    "nodemon": "^1.8.1"
+    "nodemon": "^1.8.1",
+    "q": "^1.4.1"
   },
   "devDependencies": {},
   "scripts": {
