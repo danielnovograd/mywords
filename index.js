@@ -5,37 +5,38 @@ var bodyParser = require('body-parser');
 var app = express();
 var Q = require('q');
 var Promise = require('bluebird');
-var data;
 
-var dictCall = new Promise(
-  function() {
-  request('http://api.wordnik.com:80/v4/word.json/' + data + '/definitions?limit=5&includeRelated=true&sourceDictionaries=wiktionary&useCanonical=true&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5', function (error, response, body) {
-    if(error){return console.log('Error:', error);}
-    if(response.statusCode !== 200){
+var one, two;
+
+var dictCall = function(data) {
+  return new Promise(function(resolve, reject) {
+    request('http://api.wordnik.com:80/v4/word.json/' + data + '/definitions?limit=5&includeRelated=true&sourceDictionaries=wiktionary&useCanonical=true&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5', function (error, response, body) {
+      if(error){return console.log('Error:', error);}
+      if(response.statusCode !== 200) {
         return console.log('Invalid Status Code Returned:', response.statusCode);
-    }
-    var answer = JSON.parse(body)[0].text;
-    dictData = answer;
-});
-});
+      }
+      var answer = JSON.parse(body)[0].text;
+      resolve(answer);
+    });
+  });
+}
 
-var etymCall = new Promise(
-function() {
+var etmyCall = function(data) {
+ return new Promise(function(resolve, reject) {
   request('http://api.wordnik.com:80/v4/word.json/' + data + '/etymologies?useCanonical=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5', function (error, response, body) {
     if(error){return console.log('Error:', error);}
-    if(response.statusCode !== 200){
-        return console.log('Invalid Status Code Returned:', response.statusCode);
+    if(response.statusCode !== 200) {
+      return console.log('Invalid Status Code Returned:', response.statusCode);
     }
     var answer = JSON.parse(body);
-    console.log("WHAHWA:   ", answer);
-    etymData = answer;
-});
-});
+    resolve(answer);
+    });
+  });
+}
 
-var something = new Promise(
-  function() {
+var something = function() {
   console.log("crackers");
-});
+};
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -50,18 +51,18 @@ app.listen(app.get('port'), function() {
 app.all('/', function(req, res, next) {
     console.log(req.url, req.method);
     next();
-})
+});
 
 app.use(express.static(__dirname + '/'));
 
-var dictData;
-var etymData;
-
 app.post('/api/word', function(req, res) {
-    data = req.body.data;
-    Promise.aggregate([
-      something, dictCall, etymCall
-      ]).then(function(results) {
-        res.send({dictData: dictData, etymData: etymData});
-    })
+  var first = dictCall(req.body.data);
+  var second = etmyCall(req.body.data);
+  Promise.all([
+    first, second
+    ]).then(function(results) {
+      res.send(results);
+    }).catch(function() {
+      console.log("Some kind of error!");
+    });
 });
