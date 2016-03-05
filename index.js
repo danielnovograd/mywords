@@ -2,11 +2,9 @@ var express = require('express');
 var path = require('path');
 var request = require('request');
 var bodyParser = require('body-parser');
-var app = express();
-var Q = require('q');
 var Promise = require('bluebird');
-
-var one, two;
+var $ = require('jquery');
+var app = express();
 
 var dictCall = function(data) {
   return new Promise(function(resolve, reject) {
@@ -29,6 +27,7 @@ var etmyCall = function(data) {
       return console.log('Invalid Status Code Returned:', response.statusCode);
     }
     var answer = JSON.parse(body);
+    console.log(answer);
     resolve(answer);
     });
   });
