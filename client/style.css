@@ -1,0 +1,28 @@
+/*.page-header {
+  font-family: 'Parkavenue', cursive;
+  font-variant: small-caps;
+}
+
+.def {
+  display: inline;
+  width: 40%;
+  float: left;
+  margin-left: 3%;
+}
+
+.etym {
+  display: inline;
+  width: 40%;
+  float: right;
+  margin-right: 3%;
+}
+
+.history h5 {
+  text-align: center;
+  margin-top: 10%;
+  clear: both;
+}
+
+.history p {
+  text-align: center;
+}*/
