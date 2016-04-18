@@ -38,7 +38,9 @@
         </div>
         <div class="history" ng-show="showLookups">
           <h5>Lookup History: </h5>
-            <p>{{lookupList}}</p>
+            <ul>
+            <li ng-repeat="word in lookupList"><a href="" ng-click="pastLookup(word)">{{word}}</a></li>
+            </ul>
         </div>
     <script type="text/ng-template" id="/home.html">
         <div class="page-header">
