@@ -28,7 +28,8 @@ app.controller('MainCtrl',
             console.log("RESPONSE OBJECT", response);
             $scope.showLookups = true;
             $scope.wordDefinition = response.data[0];
-            $scope.wordEtymology = response.data[1][0];
+            $scope.wordEtymology = response.data[1];
+            console.log($scope.wordEtymology);
             $scope.lookupList.push($scope.targetWord);
           })
         };

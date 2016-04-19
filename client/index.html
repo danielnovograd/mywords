@@ -24,15 +24,19 @@
       <div ng-show="showLookups">
         <div class="def">
             <h3>Definition</h3>
-              <ol>
+              <ul>
                 <li ng-repeat="def in wordDefinition">
                   <p><strong>{{def.partOfSpeech}}</strong> -- {{def.text}}</p>
                 </li>
-              </ol>
+              </ul>
             </div>
             <div class="etym">
             <h3>Etymology</h3>
-              <p>{{wordEtymology}}</p>
+              <ul>
+                <li ng-repeat="etym in wordEtymology">
+                <p><strong>{{etym.entry}}</strong> -- {{etym.etymology}}</p>
+              </ul>
+
             </div>
           </div>
         </div>

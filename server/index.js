@@ -44,13 +44,21 @@ var etmyCall = function(data) {
             }
             var $ = cheerio.load(body);
             var defs = $('#dictionary dl > *');
+            console.log("DEFS", defs[0]);
+            var twople = {};
             defs.each(function(d, el) {
                 if (el.name === 'dt') {
-                    // console.log('\n' + chalk.bold($(el).text()) + '\n');
+                    console.log("DT", '\n' + chalk.bold($(el).text().trim()) + '\n');
+                    twople['entry'] = $(el).text().trim();
                 }
                 if (el.name === 'dd') {
-                    // console.log($(el).text().trim() + '\n');
-                    etymology.push($(el).text().trim() + '\n');
+                    console.log("DD", $(el).text().trim() + '\n');
+                    twople['etymology'] = $(el).text().trim() + '\n';
+                }
+                console.log(twople);
+                if (twople['etymology']) {
+                    etymology.push(twople);
+                    twople = {};
                 }
             });
             resolve(etymology);
