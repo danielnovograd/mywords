@@ -25,21 +25,19 @@ app.controller('MainCtrl',
         $scope.queryWord = function() {
           words.queryWord($scope.targetWord)
           .then(function(response){
-            console.log("RESPONSE OBJECT", response);
-            $scope.showLookups = true;
             $scope.wordDefinition = response.data[0];
             $scope.wordEtymology = response.data[1];
-            console.log($scope.wordEtymology);
-            $scope.lookupList.push($scope.targetWord);
+            if ($scope.wordDefinition.length > 0 || $scope.wordEtymology.length > 0) {
+                $scope.lookupList.push($scope.targetWord);    
+            }
+            $scope.showLookups = true;
           })
         };
 
         //redo past query
         $scope.pastLookup = function(word) {
-            console.log(word);
             words.queryWord(word)
             .then(function(response){
-            console.log("RESPONSE OBJECT", response);
             $scope.showLookups = true;
             $scope.wordDefinition = response.data[0];
             $scope.wordEtymology = response.data[1][0];
