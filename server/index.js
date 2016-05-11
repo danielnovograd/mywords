@@ -1,82 +1,13 @@
 var express = require('express');
-var path = require('path');
-var request = require('request');
-var bodyParser = require('body-parser');
-var Promise = require('bluebird');
 var app = express();
-var cheerio = require('cheerio');
-var chalk = require('chalk');
-var opts = require("nomnom").parse();
+var port = process.env.PORT || 5000;
 
-app.set('port', (process.env.PORT || 5000));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+require('./config/middleware.js')(app, express);
 
-app.listen(app.get('port'), function() {
-    console.log('Node app is running on port', app.get('port'));
-});
+module.exports = app;
 
-var dictCall = function(data) {
-    return new Promise(function(resolve, reject) {
-        request('http://api.wordnik.com:80/v4/word.json/' + data + '/definitions?limit=5&includeRelated=true&sourceDictionaries=wiktionary&useCanonical=true&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5', function(error, response, body) {
-            if (error) {
-                return console.log('Error:', error);
-            }
-            if (response.statusCode !== 200) {
-                return console.log('Invalid Status Code Returned:', response.statusCode);
-            }
-            var answer = JSON.parse(body);
-            resolve(answer);
-        });
-    });
-}
-
-var etmyCall = function(data) {
-    var etymology = [];
-    var url = 'http://www.etymonline.com/index.php?term=' + data + '&allowed_in_frame=0';
-    return new Promise(function(resolve, reject) {
-        request(url, function(error, response, body) {
-            if (error || response.statusCode !== 200) {
-                console.error('no results found.');
-                return;
-            }
-            var $ = cheerio.load(body);
-            var defs = $('#dictionary dl > *');
-            console.log("DEFS", defs[0]);
-            var twople = {};
-            defs.each(function(d, el) {
-                if (el.name === 'dt') {
-                    console.log("DT", '\n' + chalk.bold($(el).text().trim()) + '\n');
-                    twople['entry'] = $(el).text().trim();
-                }
-                if (el.name === 'dd') {
-                    console.log("DD", $(el).text().trim() + '\n');
-                    twople['etymology'] = $(el).text().trim() + '\n';
-                }
-                console.log(twople);
-                if (twople['etymology']) {
-                    etymology.push(twople);
-                    twople = {};
-                }
-            });
-            resolve(etymology);
-        });
-
-    });
+if(!module.parent){
+  app.listen(port, function () {
+    console.log('Server now listening on port ' + port);
+  });
 };
-
-app.use(express.static(__dirname + '../../client'));
-
-app.post('/api/word', function(req, res) {
-    var first = dictCall(req.body.data);
-    var second = etmyCall(req.body.data);
-    Promise.all([
-        first, second
-    ]).then(function(results) {
-        res.send(results);
-    }).catch(function() {
-        console.log("Some kind of error!");
-    });
-});

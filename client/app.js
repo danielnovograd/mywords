@@ -53,7 +53,7 @@ app.factory('words', function($http) {
     var queryWord = function(word) {
         return $http({
             method: 'POST',
-            url: '/api/word',
+            url: '/api/lookups/query',
             data: JSON.stringify({data: word})
         });
     };
