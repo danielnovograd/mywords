@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <title>MyWord(s)!</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+    <script src="app.js"></script>
+
+</head>
+
+<body ng-app="myWord" ng-controller="MainCtrl">
+    <div style="text-align: center">
+      <ui-view></ui-view>
+      <div>
+        <form ng-submit="queryWord()">
+            <input type="text" placeholder="WAT DOS IT MENE" ng-model="targetWord"></input>
+            </br>
+            <button type="submit">Leggo!</button>
+        </form>
+      </div>
+    </div>
+      <div ng-show="showLookups">
+        <div class="def">
+            <h3>Definition</h3>
+              <ul>
+                <li ng-repeat="def in wordDefinition">
+                  <p><strong>{{def.partOfSpeech}}</strong> -- {{def.text}}</p>
+                </li>
+              </ul>
+            </div>
+            <div class="etym">
+            <h3>Etymology</h3>
+              <ul>
+                <li ng-repeat="etym in wordEtymology">
+                <p><strong>{{etym.entry}}</strong> -- {{etym.etymology}}</p>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="searchHistory" ng-show="showLookups">
+          <h5>Lookup History: </h5>
+            <ul>
+              <li ng-repeat="word in lookupList"><a href="" ng-click="pastLookup(word)">{{word}}</a>
+                <button ng-click="save(word)">Save to your list</button>
+              </li>
+            </ul>
+            <button ng-click="clearList()">Clear your List</button>
+        </div>
+        <div class="savedList">
+          <h3>Saved List</h3>
+          <ul>
+            <li ng-repeat="(key, value) in currentList">{{key}}</li>
+        </div>
+    <script type="text/ng-template" id="/home.html">
+        <div class="page-header">
+            <h1 style="font-family: Josefin">MyWord(s)</h1>
+        </div>
+        <!-- rest of template -->
+    </script>
+</body>
+
+</html>
