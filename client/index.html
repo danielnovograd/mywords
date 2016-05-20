@@ -45,12 +45,12 @@
                 <button ng-click="save(word)">Save to your list</button>
               </li>
             </ul>
-            <button ng-click="clearList()">Clear your List</button>
         </div>
         <div class="savedList">
           <h3>Saved List</h3>
           <ul>
             <li ng-repeat="(key, value) in currentList">{{key}}</li>
+          <button ng-click="clearList()">Clear your List</button>
         </div>
     <script type="text/ng-template" id="/home.html">
         <div class="page-header">

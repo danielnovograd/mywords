@@ -18,7 +18,7 @@ app.config([
 
 app.controller('MainCtrl',
     function($scope, $http, words) {
-        $scope.currentList = words.currentList;
+        $scope.currentList = words.loadList();
 
         $scope.showLookups = false;
         $scope.lookupList = words.lookupHistory;
@@ -45,13 +45,17 @@ app.controller('MainCtrl',
             $scope.wordEtymology = response.data[1][0];
         })
         }
+
         $scope.targetWord = '';
+
         $scope.save = function(word) {
             words.saveToList(word);
+            $scope.currentList = words.loadList();
         };
         $scope.clearList = function() {
             if(confirm("Are you sure you want to delete?")) {
                 words.clearList();
+                $scope.currentList = words.loadList();
             };
         }
     });
@@ -62,16 +66,19 @@ app.factory('words', function($http) {
     var loadList = function() {
         var savedList = localStorage.getItem('wordList');
         if (savedList === null) {
-            localStorage.setItem('wordList', JSON.stringify(currentList));
+            return localStorage.setItem('wordList', JSON.stringify(currentList));
         }
         else {
             currentList = JSON.parse(savedList);
+            return currentList;
         }
     };
 
     var clearList = function() {
         currentList = {};
         localStorage.setItem('wordList', JSON.stringify(currentList));
+        loadList();
+        console.log("UPDATED", currentList);
     };
 
     var queryWord = function(word) {
@@ -85,11 +92,12 @@ app.factory('words', function($http) {
     var saveToList = function(word) {
         currentList[word] = true;
         localStorage.setItem('wordList', JSON.stringify(currentList));
-        loadList();
-        console.log("WORD LIST", JSON.parse(localStorage.getItem('wordList')));
+        console.log("STORAGE WORD LIST", JSON.parse(localStorage.getItem('wordList')));
+        console.log("LOCAL WORD LIST", currentList);
+        console.log("LOADLIST", loadList())
+        return loadList();
     };
 
-    var localList = loadList();
     var lookupHistory = [];
 
     return {
@@ -97,7 +105,6 @@ app.factory('words', function($http) {
         loadList: loadList,
         saveToList: saveToList,
         queryWord: queryWord,
-        localList: localList,
         lookupHistory: lookupHistory,
         clearList: clearList
     };
