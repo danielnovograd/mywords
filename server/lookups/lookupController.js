@@ -18,7 +18,7 @@ var dictCall = function(data) {
             resolve(answer);
         });
     });
-}
+};
 
 var etmyCall = function(data) {
     var etymology = [];
@@ -34,12 +34,12 @@ var etmyCall = function(data) {
             var twople = {};
             defs.each(function(d, el) {
                 if (el.name === 'dt') {
-                    twople['entry'] = $(el).text().trim();
+                    twople.entry = $(el).text().trim();
                 }
                 if (el.name === 'dd') {
-                    twople['etymology'] = $(el).text().trim() + '\n';
+                    twople.etymology = $(el).text().trim() + '\n';
                 }
-                if (twople['etymology']) {
+                if (twople.etymology) {
                     etymology.push(twople);
                     twople = {};
                 }
@@ -63,4 +63,4 @@ module.exports = {
             console.log("Some kind of error!");
         });
     }
-}
+};

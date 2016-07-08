@@ -33,7 +33,7 @@ app.controller('MainCtrl',
                 $scope.lookupList.push($scope.targetWord);
             }
             $scope.showLookups = true;
-          })
+          });
         };
 
         //redo past query
@@ -43,7 +43,7 @@ app.controller('MainCtrl',
             $scope.showLookups = true;
             $scope.wordDefinition = response.data[0];
             $scope.wordEtymology = response.data[1][0];
-        })
+        });
         };
 
         $scope.targetWord = '';
@@ -56,8 +56,8 @@ app.controller('MainCtrl',
             if(confirm("Are you sure you want to delete?")) {
                 words.clearList();
                 $scope.currentList = words.loadList();
-            };
-        }
+            }
+        };
     });
 
 app.factory('words', function($http) {
