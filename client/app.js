@@ -40,7 +40,7 @@ app.controller('MainCtrl',
             .then(function(response){
             $scope.showLookups = true;
             $scope.wordDefinition = response.data[0];
-            $scope.wordEtymology = response.data[1][0];
+            $scope.wordEtymology = response.data[1];
         });
         };
 
