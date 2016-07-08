@@ -44,7 +44,7 @@ app.controller('MainCtrl',
             $scope.wordDefinition = response.data[0];
             $scope.wordEtymology = response.data[1][0];
         })
-        }
+        };
 
         $scope.targetWord = '';
 
@@ -78,7 +78,6 @@ app.factory('words', function($http) {
         currentList = {};
         localStorage.setItem('wordList', JSON.stringify(currentList));
         loadList();
-        console.log("UPDATED", currentList);
     };
 
     var queryWord = function(word) {
@@ -92,9 +91,6 @@ app.factory('words', function($http) {
     var saveToList = function(word) {
         currentList[word] = true;
         localStorage.setItem('wordList', JSON.stringify(currentList));
-        console.log("STORAGE WORD LIST", JSON.parse(localStorage.getItem('wordList')));
-        console.log("LOCAL WORD LIST", currentList);
-        console.log("LOADLIST", loadList())
         return loadList();
     };
 
