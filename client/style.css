@@ -26,3 +26,7 @@
 .history p {
   text-align: center;
 }*/
+
+.save-button {
+  display: none;
+}
