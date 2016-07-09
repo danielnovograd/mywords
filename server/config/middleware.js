@@ -9,7 +9,7 @@ module.exports = function(app, express) {
   app.use(express.static(__dirname + '/../../client'));
 
   app.use('/api/lookups', lookupRouter);
-  app.use('/api/save', wordListRouter);
+  app.use('/api/wordList', wordListRouter);
 
   require('../wordLists/wordListRoutes.js')(wordListRouter)
   require('../lookups/lookupRoutes.js')(lookupRouter);
