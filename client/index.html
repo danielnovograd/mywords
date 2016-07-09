@@ -72,7 +72,7 @@
     <h3>Saved List</h3>
     <ul>
         <li class="saved-word" ng-repeat="(key, value) in currentList">
-            <a href="" ng-click="pastLookup(word)">{{key}}</a>
+            <a href="" ng-click="pastLookup(key)">{{key}}</a>
             <button class="delete-button" ng-click="delete(key)">Delete from your list</button>
         </li>
 
