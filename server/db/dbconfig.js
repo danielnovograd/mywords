@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/todoApp', function(err) {
+mongoose.connect(process.env.MONGOLAB_URI, function(err) {
   if (err) {
     console.log('connection err: ', err);
   }
