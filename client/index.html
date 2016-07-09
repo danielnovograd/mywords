@@ -38,6 +38,7 @@
         </br>
         <button type="submit">Leggo!</button>
       </form>
+      <h2 ng-show="currentWord">Looking up: {{currentWord}}</h2>
     </div>
   </div>
   <div ng-show="showLookups">
@@ -61,7 +62,8 @@
   <div class="searchHistory" ng-show="showLookups">
     <h5>Lookup History: </h5>
     <ul>
-      <li class="past-word" ng-repeat="word in lookupList"><a href="" ng-click="pastLookup(word)">{{word}}</a>
+      <li class="past-word" ng-repeat="word in lookupList">
+        <a href="" ng-click="pastLookup(word)">{{word}}</a>
         <button class="save-button" ng-click="save(word)">Save to your list</button>
       </li>
     </ul>
@@ -69,7 +71,11 @@
   <div class="savedList">
     <h3>Saved List</h3>
     <ul>
-      <li ng-repeat="(key, value) in currentList">{{key}}</li>
+        <li class="saved-word" ng-repeat="(key, value) in currentList">
+            <a href="" ng-click="pastLookup(word)">{{key}}</a>
+            <button class="delete-button" ng-click="delete(key)">Delete from your list</button>
+        </li>
+
       <button ng-click="clearList()">Clear your List</button>
   </div>
   <script type="text/ng-template" id="/home.html">
@@ -80,10 +86,16 @@
 </body>
 <script>
     $('.searchHistory').on("mouseenter", ".past-word", function() {
-        $(this).children('button').toggle()
+        $(this).children('.save-button').toggle()
     });
-    $(document).on("mouseleave", ".past-word", function() {
-      $(this).children('button').toggle()
+    $('.searchHistory').on("mouseleave", ".past-word", function() {
+      $(this).children('.save-button').toggle()
+    });
+    $('.savedList').on("mouseenter", ".saved-word", function() {
+        $(this).children('.delete-button').toggle()
+    });
+    $('.savedList').on("mouseleave", ".saved-word", function() {
+      $(this).children('.delete-button').toggle()
     });
 </script>
 
