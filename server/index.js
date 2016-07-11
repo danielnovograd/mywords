@@ -3,6 +3,7 @@ var app = express();
 var port = process.env.PORT || 5000;
 
 require('./config/middleware.js')(app, express);
+require('./db/dbconfig.js');
 
 if(!module.parent){
   app.listen(port, function () {

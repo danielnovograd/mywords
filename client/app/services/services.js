@@ -34,10 +34,24 @@ angular.module('Wordrly.services', [])
   };
 
   var deleteFromList = function(word) {
-
     delete currentList[word];
     localStorage.setItem('wordList', JSON.stringify(currentList));
     return loadList();
+  }
+
+  var saveToDB = function(data) {
+    console.log("SERVICE DATA: ", data);
+    return $http({
+      method: 'POST',
+      url: '/api/wordList/save',
+      data: JSON.stringify(data)
+    }).then(function(response) {
+      return response.data.map(function(word) {
+        return [word.word, word.definition, word.etymology];
+      });
+    }).catch(function(err) {
+      console.log(err);
+    })
   }
 
   var lookupHistory = [];
@@ -49,6 +63,7 @@ angular.module('Wordrly.services', [])
     deleteFromList: deleteFromList,
     queryWord: queryWord,
     lookupHistory: lookupHistory,
-    clearList: clearList
+    clearList: clearList,
+    saveToDB: saveToDB
   };
 });
