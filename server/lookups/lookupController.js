@@ -3,7 +3,6 @@ var Promise = require('bluebird');
 var cheerio = require('cheerio');
 var chalk = require('chalk');
 var opts = require("nomnom").parse();
-var db = require('../db/dbconfig.js')
 // var bodyParser = require('body-parser');
 
 var dictCall = function(data) {

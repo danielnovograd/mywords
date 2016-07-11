@@ -88,7 +88,6 @@ angular.module('Wordrly.lookups', [])
   var deleteFromList = function(word) {
 
     delete currentList[word];
-    console.log(currentList);
     localStorage.setItem('wordList', JSON.stringify(currentList));
     return loadList();
   }

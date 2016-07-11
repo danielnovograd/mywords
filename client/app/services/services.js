@@ -36,7 +36,6 @@ angular.module('Wordrly.services', [])
   var deleteFromList = function(word) {
 
     delete currentList[word];
-    console.log(currentList);
     localStorage.setItem('wordList', JSON.stringify(currentList));
     return loadList();
   }

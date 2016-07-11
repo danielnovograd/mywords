@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
-var savedLookupSchema = new mongoose.Schema({
+var savedWordSchema = new mongoose.Schema({
   word: String,
   definition: Array,
   etymology: Array
 })
 
-module.exports = mongoose.model('savedLookups', savedLookupSchema);
+module.exports = mongoose.model('savedWord', savedWordSchema);
