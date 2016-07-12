@@ -40,7 +40,7 @@ angular.module('Wordrly.lookups', [])
   };
 
   $scope.save = function(word) {
-    words.saveToDB({
+    words.saveToList({
       word: word,
       definition: $scope.wordDefinition.map(function(word) {
         return word.text }),
@@ -59,8 +59,8 @@ angular.module('Wordrly.lookups', [])
 
   $scope.clearList = function() {
     if (confirm("Are you sure you want to delete?")) {
-      words.clearList();
-      $scope.currentList = words.loadList();
+      $scope.currentList = words.clearList();
+      console.log($scope.currentList);
     }
   };
 });

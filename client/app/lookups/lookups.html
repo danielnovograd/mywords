@@ -37,14 +37,14 @@
     </ul>
   </div>
   <div class="savedList">
-    <h3>Saved List</h3>
+    <h3>Saved List<button ng-click="clearList()">Clear your List</button></h3>
     <ul>
         <li class="saved-word" ng-repeat="word in currentList">
             <a href="" ng-click="pastLookup(word)">{{word}}</a>
             <button class="delete-button" ng-click="delete(key)">Delete from your list</button>
         </li>
 
-      <button ng-click="clearList()">Clear your List</button>
+
   </div>
   <script type="text/ng-template" id="/home.html">
     <div class="page-header">

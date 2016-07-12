@@ -16,7 +16,7 @@ module.exports = {
     });
 
     newWord.save().then(function(word) {
-      savedWord.find().then(function(list) {
+      savedWord.find({user: {$eq: defaultUser}}).then(function(list) {
         res.send(_.map(list, function(entry) {
           return entry.word;
         }));
@@ -28,12 +28,25 @@ module.exports = {
   },
 
   getList: function(req, res) {
-    savedWord.find()
+    console.log(req.body.user);
+    savedWord.find({user: {$eq: req.body.user}})
     .then(function(list) {
       res.send(_.map(list, function(entry) {
         return entry.word;
       })
       );
+    })
+  },
+
+  clearList: function(req, res) {
+    savedWord.remove({user: {$eq: defaultUser}})
+    .then(function(list) {
+      list.find({user: {$eq: defaultUser}})
+      .then(function(list) {
+        res.send(_.map(list, function(entry) {
+          return entry.word;
+        }))
+      })
     })
   }
 }

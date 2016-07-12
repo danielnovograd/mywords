@@ -2,32 +2,40 @@ angular.module('Wordrly.services', [])
 
 .factory('words', function($http) {
   var currentList = {};
-
+  var defaultUser = 'dan'
   var loadList = function() {
     return $http({
-      method: 'GET',
-      url: '/api/wordList/list'
+      method: 'POST',
+      url: '/api/wordList/list',
+      data: {
+        user: defaultUser
+      }
     })
   };
 
   var clearList = function() {
-    currentList = {};
-    localStorage.setItem('wordList', JSON.stringify(currentList));
-    loadList();
+    return $http({
+      method: 'POST',
+      url: '/api/wordList/clear',
+      data: JSON.stringify({
+        user: defaultUser
+      })
+    }).then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      console.log(error);
+    });
   };
 
   var queryWord = function(word) {
     return $http({
       method: 'POST',
       url: '/api/lookups/query',
-      data: JSON.stringify({ data: word })
+      data: JSON.stringify({
+        user: defaultUser,
+        data: word
+      })
     });
-  };
-
-  var saveToList = function(word) {
-    currentList[word] = true;
-    localStorage.setItem('wordList', JSON.stringify(currentList));
-    return loadList();
   };
 
   var deleteFromList = function(word) {
@@ -36,13 +44,13 @@ angular.module('Wordrly.services', [])
     return loadList();
   }
 
-  var saveToDB = function(data) {
+  var saveToList = function(data) {
     return $http({
       method: 'POST',
       url: '/api/wordList/save',
       data: JSON.stringify(data)
     }).then(function(response) {
-      return response.data.sort()
+      return response.data.sort();
     }).catch(function(err) {
       console.log(err);
     })
@@ -58,6 +66,6 @@ angular.module('Wordrly.services', [])
     queryWord: queryWord,
     lookupHistory: lookupHistory,
     clearList: clearList,
-    saveToDB: saveToDB
+    saveToList: saveToList
   };
 });
