@@ -6,7 +6,9 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
-  <script src="app.js"></script>
+  <script src="app/app.js"></script>
+  <script src="app/lookups/lookups.js"></script>
+  <script src="app/services/services.js"></script>
   <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
@@ -27,76 +29,15 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="msapplication-config" content="/images/favicons/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
+
 </head>
 
-<body ng-app="myWord" ng-controller="MainCtrl">
-  <div style="text-align: center">
-    <ui-view></ui-view>
-    <div>
-      <form ng-submit="queryWord()">
-        <input type="text" placeholder="WAT DOS IT MENE" ng-model="targetWord"></input>
-        </br>
-        <button type="submit">Leggo!</button>
-      </form>
-      <h2 ng-show="currentWord">Looking up: {{currentWord}}</h2>
-    </div>
-  </div>
-  <div ng-show="showLookups">
-    <div class="def">
-      <h3>Definition</h3>
-      <ul>
-        <li ng-repeat="def in wordDefinition">
-          <p><strong>{{def.partOfSpeech}}</strong> -- {{def.text}}</p>
-        </li>
-      </ul>
-    </div>
-    <div class="etym">
-      <h3>Etymology</h3>
-      <ul>
-        <li ng-repeat="etym in wordEtymology">
-          <p><strong>{{etym.entry}}</strong> -- {{etym.etymology}}</p>
-      </ul>
-    </div>
-  </div>
-  </div>
-  <div class="searchHistory" ng-show="showLookups">
-    <h5>Lookup History: </h5>
-    <ul>
-      <li class="past-word" ng-repeat="word in lookupList">
-        <a href="" ng-click="pastLookup(word)">{{word}}</a>
-        <button class="save-button" ng-click="save(word)">Save to your list</button>
-      </li>
-    </ul>
-  </div>
-  <div class="savedList">
-    <h3>Saved List</h3>
-    <ul>
-        <li class="saved-word" ng-repeat="(key, value) in currentList">
-            <a href="" ng-click="pastLookup(word)">{{key}}</a>
-            <button class="delete-button" ng-click="delete(key)">Delete from your list</button>
-        </li>
-
-      <button ng-click="clearList()">Clear your List</button>
-  </div>
-  <script type="text/ng-template" id="/home.html">
-    <div class="page-header">
-      <h1 style="font-family: Josefin">Wordrly</h1>
-    </div>
-  </script>
+<body ng-app="Wordrly">
+  <header>
+    <h1>Wordrly</h1>
+  </header>
+  <div ui-view></div>
 </body>
-<script>
-    $('.searchHistory').on("mouseenter", ".past-word", function() {
-        $(this).children('.save-button').toggle()
-    });
-    $('.searchHistory').on("mouseleave", ".past-word", function() {
-      $(this).children('.save-button').toggle()
-    });
-    $('.savedList').on("mouseenter", ".saved-word", function() {
-        $(this).children('.delete-button').toggle()
-    });
-    $('.savedList').on("mouseleave", ".saved-word", function() {
-      $(this).children('.delete-button').toggle()
-    });
-</script>
+
 
 </html>
