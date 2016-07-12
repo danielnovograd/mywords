@@ -10,6 +10,10 @@ angular.module('Wordrly.services', [])
       data: {
         user: defaultUser
       }
+    }).then(function(response) {
+      return response.data
+    }).catch(function(error) {
+      console.log("loadList Error: ", error)
     })
   };
 
@@ -23,7 +27,7 @@ angular.module('Wordrly.services', [])
     }).then(function(response) {
       return response.data;
     }).catch(function(error) {
-      console.log(error);
+      console.log("clearList Error: ", error)
     });
   };
 
@@ -39,29 +43,40 @@ angular.module('Wordrly.services', [])
   };
 
   var deleteFromList = function(word) {
-    delete currentList[word];
-    localStorage.setItem('wordList', JSON.stringify(currentList));
-    return loadList();
-  }
+    return $http({
+      method: 'POST',
+      url: '/api/wordList/delete',
+      data: JSON.stringify({
+        word: word,
+        user: defaultUser
+      })
+    }).then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      console.log("deleteFromList Error: ", error)
+    })
+  };
 
   var saveToList = function(data) {
     return $http({
       method: 'POST',
       url: '/api/wordList/save',
-      data: JSON.stringify(data)
+      data: JSON.stringify({
+        user: defaultUser,
+        word: data
+      })
     }).then(function(response) {
-      return response.data.sort();
-    }).catch(function(err) {
-      console.log(err);
+      return response.data;
+    }).catch(function(error) {
+      console.log("saveToList Error: ", error)
     })
-  }
+  };
 
   var lookupHistory = [];
 
   return {
     currentList: currentList,
     loadList: loadList,
-    saveToList: saveToList,
     deleteFromList: deleteFromList,
     queryWord: queryWord,
     lookupHistory: lookupHistory,

@@ -4,7 +4,9 @@ angular.module('Wordrly.lookups', [])
   $scope.currentList = ['Loading']
 
   words.loadList().then(function(response) {
-    $scope.currentList = response.data.sort();
+    $scope.currentList = response.map(function(wordEntry) {
+      return wordEntry.word;
+    }).sort();
   });
 
   $scope.showLookups = false;
@@ -48,19 +50,23 @@ angular.module('Wordrly.lookups', [])
         return entry.etymology;
       })
     }).then(function(response) {
-      $scope.currentList = response;
+      $scope.currentList = response.map(function(wordEntry) {
+        return wordEntry.word;
+      }).sort();
     });
   };
 
   $scope.delete = function(word) {
-    words.deleteFromList(word);
-    $scope.currentList = words.loadList();
+    words.deleteFromList(word).then(function(response) {
+      $scope.currentList = response.map(function(wordEntry) {
+        return wordEntry.word
+      }).sort();
+    });
   };
 
   $scope.clearList = function() {
     if (confirm("Are you sure you want to delete?")) {
       $scope.currentList = words.clearList();
-      console.log($scope.currentList);
     }
   };
 });

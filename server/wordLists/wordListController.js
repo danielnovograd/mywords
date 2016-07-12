@@ -1,52 +1,54 @@
 var request = require('request');
 var Promise = require('bluebird');
 var savedWord = require('../db/models/savedLookups.js');
-var _ = require('lodash');
 
 var defaultUser = 'dan'
 
 module.exports = {
   saveList: function(req, res) {
-
-    var newWord = new savedWord({
-      user: defaultUser,
-      word: req.body.word,
-      definition: req.body.definition,
-      etymology: req.body.etymology
-    });
-
-    newWord.save().then(function(word) {
-      savedWord.find({user: {$eq: defaultUser}}).then(function(list) {
-        res.send(_.map(list, function(entry) {
-          return entry.word;
-        }));
+    savedWord.findOneAndUpdate(
+      { user: { $eq: req.body.user } },
+      { $push: { wordList: req.body.word } },
+      {
+        new: true,
+        upsert: true
       })
-    })
-    .catch(function(err) {
-      console.log("ERROR", err)
-    });
+      .then(function(userDoc) {
+        res.send(userDoc.wordList);
+      });
   },
 
   getList: function(req, res) {
-    console.log(req.body.user);
-    savedWord.find({user: {$eq: req.body.user}})
-    .then(function(list) {
-      res.send(_.map(list, function(entry) {
-        return entry.word;
+    savedWord.findOne({ user: { $eq: req.body.user } })
+      .then(function(userDoc) {
+        res.send(userDoc.wordList);
       })
-      );
-    })
+      .catch(function(error) {
+        res.send("getList error: ", error)
+      });
+  },
+
+  deleteWord: function(req, res) {
+    savedWord.findOneAndUpdate(
+      { user: { $eq: req.body.user } },
+      { $pull: { wordList: {word: req.body.word} } },
+      { new: true })
+      .then(function(userDoc) {
+        res.send(userDoc.wordList);
+      }).catch(function(error) {
+        res.send("deleteWord error: ", error);
+      });
   },
 
   clearList: function(req, res) {
-    savedWord.remove({user: {$eq: defaultUser}})
-    .then(function(list) {
-      list.find({user: {$eq: defaultUser}})
-      .then(function(list) {
-        res.send(_.map(list, function(entry) {
-          return entry.word;
-        }))
+    savedWord.findOneAndUpdate(
+      { user: { $eq: defaultUser } },
+      { wordList: [] })
+      .then(function(userDoc) {
+        res.send(userDoc.wordList);
       })
+      .catch(function(error) {
+        res.send("clearList error: ", error)
     })
   }
 }
