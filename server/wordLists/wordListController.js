@@ -1,6 +1,7 @@
 var request = require('request');
 var Promise = require('bluebird');
 var savedWord = require('../db/models/savedLookups.js');
+var _ = require('lodash');
 
 var defaultUser = 'dan'
 
@@ -16,7 +17,9 @@ module.exports = {
 
     newWord.save().then(function(word) {
       savedWord.find().then(function(list) {
-        res.send(list);
+        res.send(_.map(list, function(entry) {
+          return entry.word;
+        }));
       })
     })
     .catch(function(err) {
@@ -24,15 +27,13 @@ module.exports = {
     });
   },
 
-  getList: function(data) {
-    return new Promise(function(resolve, reject) {
-      savedWord.find(function(err, list) {
-        if (err) {
-          console.log("an error occurred trying to find the list");
-        } else if (list) {
-          resolve(list)
-        }
+  getList: function(req, res) {
+    savedWord.find()
+    .then(function(list) {
+      res.send(_.map(list, function(entry) {
+        return entry.word;
       })
-    });
+      );
+    })
   }
 }

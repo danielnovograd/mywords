@@ -4,13 +4,10 @@ angular.module('Wordrly.services', [])
   var currentList = {};
 
   var loadList = function() {
-    var savedList = localStorage.getItem('wordList');
-    if (savedList === null) {
-      return localStorage.setItem('wordList', JSON.stringify(currentList));
-    } else {
-      currentList = JSON.parse(savedList);
-      return currentList;
-    }
+    return $http({
+      method: 'GET',
+      url: '/api/wordList/list'
+    })
   };
 
   var clearList = function() {
@@ -40,15 +37,12 @@ angular.module('Wordrly.services', [])
   }
 
   var saveToDB = function(data) {
-    console.log("SERVICE DATA: ", data);
     return $http({
       method: 'POST',
       url: '/api/wordList/save',
       data: JSON.stringify(data)
     }).then(function(response) {
-      return response.data.map(function(word) {
-        return [word.word, word.definition, word.etymology];
-      });
+      return response.data.sort()
     }).catch(function(err) {
       console.log(err);
     })

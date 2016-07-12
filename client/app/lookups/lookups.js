@@ -1,7 +1,12 @@
 angular.module('Wordrly.lookups', [])
 
 .controller('lookups', function($scope, $http, words) {
-  $scope.currentList = words.loadList();
+  $scope.currentList = ['Loading']
+
+  words.loadList().then(function(response) {
+    $scope.currentList = response.data.sort();
+  });
+
   $scope.showLookups = false;
   $scope.lookupList = words.lookupHistory;
   $scope.targetWord = '';
@@ -35,8 +40,6 @@ angular.module('Wordrly.lookups', [])
   };
 
   $scope.save = function(word) {
-    words.saveToList(word);
-    $scope.currentList = words.loadList();
     words.saveToDB({
       word: word,
       definition: $scope.wordDefinition.map(function(word) {
@@ -45,8 +48,8 @@ angular.module('Wordrly.lookups', [])
         return entry.etymology;
       })
     }).then(function(response) {
-      console.log('made it', response)
-    })
+      $scope.currentList = response;
+    });
   };
 
   $scope.delete = function(word) {
