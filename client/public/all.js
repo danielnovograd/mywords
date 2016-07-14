@@ -52,7 +52,7 @@ angular.module('Wordrly.lookups', [])
 
   $scope.save = function(word) {
     words.saveToList({
-      user: $scope.current,
+      user: $scope.currentUser,
       wordObject: {
         word: word,
         definition: $scope.wordDefinition.map(function(word) {
@@ -69,7 +69,10 @@ angular.module('Wordrly.lookups', [])
   };
 
   $scope.delete = function(word) {
-    words.deleteFromList(word).then(function(response) {
+    words.deleteFromList({
+      user: $scope.currentUser,
+      word: word
+    }).then(function(response) {
       $scope.currentList = response.map(function(wordEntry) {
         return wordEntry.word;
       }).sort();
@@ -78,7 +81,7 @@ angular.module('Wordrly.lookups', [])
 
   $scope.clearList = function() {
     if (confirm("Are you sure you want to delete?")) {
-      $scope.currentList = words.clearList();
+      $scope.currentList = words.clearList($scope.currentUser);
     }
   };
 
@@ -86,7 +89,8 @@ angular.module('Wordrly.lookups', [])
     while(!$scope.currentUser) {
       $scope.currentUser = prompt("Please enter a username");
     }
-    words.loadList($scope.currentUser).then(function(response) {
+    words.loadList($scope.currentUser)
+    .then(function(response) {
       if (response.length > 0) {
         $scope.currentList = response.map(function(wordEntry) {
           return wordEntry.word;
@@ -106,9 +110,9 @@ angular.module('Wordrly.services', [])
     return $http({
       method: 'POST',
       url: '/api/wordList/list',
-      data: {
-        user: currentUser
-      }
+      data: JSON.stringify({
+        username: currentUser
+      })
     }).then(function(response) {
       return response.data;
     }).catch(function(error) {
@@ -116,38 +120,24 @@ angular.module('Wordrly.services', [])
     });
   };
 
-  var clearList = function() {
-    return $http({
-      method: 'POST',
-      url: '/api/wordList/clear',
-      data: JSON.stringify({
-        user: defaultUser
-      })
-    }).then(function(response) {
-      return response.data;
-    }).catch(function(error) {
-      console.log("clearList Error: ", error);
-    });
-  };
 
   var queryWord = function(word) {
     return $http({
       method: 'POST',
       url: '/api/lookups/query',
       data: JSON.stringify({
-        user: defaultUser,
-        data: word
+        wordQuery: word
       })
     });
   };
 
-  var deleteFromList = function(word) {
+  var deleteFromList = function(data) {
     return $http({
       method: 'POST',
       url: '/api/wordList/delete',
       data: JSON.stringify({
-        word: word,
-        user: defaultUser
+        username: data.user,
+        word: data.word
       })
     }).then(function(response) {
       return response.data;
@@ -156,12 +146,27 @@ angular.module('Wordrly.services', [])
     });
   };
 
+  var clearList = function(currentUser) {
+    return $http({
+      method: 'POST',
+      url: '/api/wordList/clear',
+      data: JSON.stringify({
+        username: currentUser
+      })
+    }).then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      console.log("clearList Error: ", error);
+    });
+  };
+
+
   var saveToList = function(data) {
     return $http({
       method: 'POST',
       url: '/api/wordList/save',
       data: JSON.stringify({
-        user: data.user,
+        username: data.user,
         word: data.wordObject
       })
     }).then(function(response) {

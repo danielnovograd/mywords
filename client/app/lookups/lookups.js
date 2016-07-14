@@ -37,7 +37,7 @@ angular.module('Wordrly.lookups', [])
 
   $scope.save = function(word) {
     words.saveToList({
-      user: $scope.current,
+      user: $scope.currentUser,
       wordObject: {
         word: word,
         definition: $scope.wordDefinition.map(function(word) {
@@ -54,7 +54,10 @@ angular.module('Wordrly.lookups', [])
   };
 
   $scope.delete = function(word) {
-    words.deleteFromList(word).then(function(response) {
+    words.deleteFromList({
+      user: $scope.currentUser,
+      word: word
+    }).then(function(response) {
       $scope.currentList = response.map(function(wordEntry) {
         return wordEntry.word;
       }).sort();
@@ -63,7 +66,7 @@ angular.module('Wordrly.lookups', [])
 
   $scope.clearList = function() {
     if (confirm("Are you sure you want to delete?")) {
-      $scope.currentList = words.clearList();
+      $scope.currentList = words.clearList($scope.currentUser);
     }
   };
 
@@ -71,7 +74,8 @@ angular.module('Wordrly.lookups', [])
     while(!$scope.currentUser) {
       $scope.currentUser = prompt("Please enter a username");
     }
-    words.loadList($scope.currentUser).then(function(response) {
+    words.loadList($scope.currentUser)
+    .then(function(response) {
       if (response.length > 0) {
         $scope.currentList = response.map(function(wordEntry) {
           return wordEntry.word;
