@@ -62,8 +62,8 @@ angular.module('Wordrly.services', [])
       method: 'POST',
       url: '/api/wordList/save',
       data: JSON.stringify({
-        user: defaultUser,
-        word: data
+        user: data.user,
+        word: data.wordObject
       })
     }).then(function(response) {
       return response.data;
