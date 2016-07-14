@@ -2,7 +2,7 @@ angular.module('Wordrly.services', [])
 
 .factory('words', function($http) {
   var currentList = {};
-  var defaultUser = 'dan'
+  var defaultUser = 'dan';
   var loadList = function() {
     return $http({
       method: 'POST',
@@ -11,10 +11,10 @@ angular.module('Wordrly.services', [])
         user: defaultUser
       }
     }).then(function(response) {
-      return response.data
+      return response.data;
     }).catch(function(error) {
-      console.log("loadList Error: ", error)
-    })
+      console.log("loadList Error: ", error);
+    });
   };
 
   var clearList = function() {
@@ -27,7 +27,7 @@ angular.module('Wordrly.services', [])
     }).then(function(response) {
       return response.data;
     }).catch(function(error) {
-      console.log("clearList Error: ", error)
+      console.log("clearList Error: ", error);
     });
   };
 
@@ -53,8 +53,8 @@ angular.module('Wordrly.services', [])
     }).then(function(response) {
       return response.data;
     }).catch(function(error) {
-      console.log("deleteFromList Error: ", error)
-    })
+      console.log("deleteFromList Error: ", error);
+    });
   };
 
   var saveToList = function(data) {
@@ -68,8 +68,8 @@ angular.module('Wordrly.services', [])
     }).then(function(response) {
       return response.data;
     }).catch(function(error) {
-      console.log("saveToList Error: ", error)
-    })
+      console.log("saveToList Error: ", error);
+    });
   };
 
   var lookupHistory = [];

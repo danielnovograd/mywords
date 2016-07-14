@@ -1,7 +1,7 @@
 angular.module('Wordrly.lookups', [])
 
 .controller('lookups', function($scope, $http, words) {
-  $scope.currentList = ['Loading']
+  $scope.currentList = ['Loading'];
 
   words.loadList().then(function(response) {
     $scope.currentList = response.map(function(wordEntry) {
@@ -45,7 +45,7 @@ angular.module('Wordrly.lookups', [])
     words.saveToList({
       word: word,
       definition: $scope.wordDefinition.map(function(word) {
-        return word.text }),
+        return word.text; }),
       etymology: $scope.wordEtymology.map(function(entry) {
         return entry.etymology;
       })
@@ -59,7 +59,7 @@ angular.module('Wordrly.lookups', [])
   $scope.delete = function(word) {
     words.deleteFromList(word).then(function(response) {
       $scope.currentList = response.map(function(wordEntry) {
-        return wordEntry.word
+        return wordEntry.word;
       }).sort();
     });
   };

@@ -14,10 +14,10 @@ gulp.task('lint', function() {
 gulp.task('scripts', function() {
   return gulp.src('./client/app/**/*.js')
     .pipe(concat('all.js'))
-    .pipe(gulp.dest('public'))
+    .pipe(gulp.dest('client/public'))
     .pipe(rename('all.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('public'))
+    .pipe(uglify({mangle: false}))
+    .pipe(gulp.dest('client/public'));
 });
 
 gulp.task('watch', function() {
