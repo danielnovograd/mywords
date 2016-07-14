@@ -11,3 +11,12 @@ gulp.task('lint', function() {
   .pipe(jshint.reporter('default'))
 });
 
+gulp.task('scripts', function() {
+  return gulp.src('./client/app/**/*.js')
+    .pipe(concat('all.js'))
+    .pipe(gulp.dest('public'))
+    .pipe(rename('all.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('public')
+});
+
