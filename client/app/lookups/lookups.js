@@ -10,7 +10,7 @@ angular.module('Wordrly.lookups', [])
 
   //input text search
   $scope.queryWord = function() {
-    words.queryWord($scope.targetWord)
+    words.queryWord($scope.targetWord.toLowerCase())
       .then(function(response) {
         $scope.currentWord = $scope.targetWord;
         $scope.wordDefinition = response.data[0];
