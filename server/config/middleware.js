@@ -11,6 +11,6 @@ module.exports = function(app, express) {
   app.use('/api/lookups', lookupRouter);
   app.use('/api/wordList', wordListRouter);
 
-  require('../wordLists/wordListRoutes.js')(wordListRouter)
+  require('../wordLists/wordListRoutes.js')(wordListRouter);
   require('../lookups/lookupRoutes.js')(lookupRouter);
 };
