@@ -22,7 +22,7 @@ var dictCall = function(data) {
 
 var etmyCall = function(data) {
   var etymology = [];
-  var url = `http://www.etymonline.com/index.php?term=${data}&allowed_in_frame=0`;
+  var url = 'http://www.etymonline.com/index.php?term=' + data + '&allowed_in_frame=0';
   return new Promise(function(resolve, reject) {
     request(url, function(error, response, body) {
       if (error || response.statusCode !== 200) {

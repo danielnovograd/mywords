@@ -2,7 +2,7 @@ var request = require('request');
 var Promise = require('bluebird');
 var savedWord = require('../db/models/savedLookups.js');
 
-var defaultUser = 'dan'
+var defaultUser = 'dan';
 
 module.exports = {
   saveList: function(req, res) {
@@ -24,7 +24,7 @@ module.exports = {
         res.send(userDoc.wordList);
       })
       .catch(function(error) {
-        res.send("getList error: ", error)
+        res.send("getList error: ", error);
       });
   },
 
@@ -48,7 +48,7 @@ module.exports = {
         res.send(userDoc.wordList);
       })
       .catch(function(error) {
-        res.send("clearList error: ", error)
-    })
+        res.send("clearList error: ", error);
+    });
   }
-}
+};

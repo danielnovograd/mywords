@@ -6,7 +6,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 
 gulp.task('lint', function() {
-  return gulp.src('./client/app/**/*.js')
+  return gulp.src(['./client/app/**/*.js', './server/**/*.js'])
   .pipe(jshint())
   .pipe(jshint.reporter('default'))
 });
@@ -21,7 +21,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('./client/app/**/*.js', ['lint', 'scripts']);
+  gulp.watch(['./client/app/**/*.js', './server/**/*.js'], ['lint', 'scripts']);
 });
 
 gulp.task('default', ['lint', 'scripts', 'watch']);
