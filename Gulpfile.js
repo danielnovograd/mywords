@@ -17,6 +17,11 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('public'))
     .pipe(rename('all.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('public')
+    .pipe(gulp.dest('public'))
 });
+
+gulp.task('watch', function() {
+  gulp.watch('./client/app/**/*.js', ['lint', 'scripts']);
+});
+
 
