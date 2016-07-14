@@ -15,14 +15,8 @@ app.config([
 
 angular.module('Wordrly.lookups', [])
 
-.controller('lookups', function($scope, $http, words) {
+.controller('lookups', function($scope, $http, $timeout, words) {
   $scope.currentList = ['Loading'];
-
-  words.loadList().then(function(response) {
-    $scope.currentList = response.map(function(wordEntry) {
-      return wordEntry.word;
-    }).sort();
-  });
 
   $scope.showLookups = false;
   $scope.lookupList = words.lookupHistory;
@@ -84,6 +78,16 @@ angular.module('Wordrly.lookups', [])
       $scope.currentList = words.clearList();
     }
   };
+
+  $timeout(function(){while(!$scope.currentUser) {
+    $scope.currentUser = prompt("Please enter a username");
+  }}, 500);
+
+  words.loadList().then(function(response) {
+    $scope.currentList = response.map(function(wordEntry) {
+      return wordEntry.word;
+    }).sort();
+  });
 });
 angular.module('Wordrly.services', [])
 
