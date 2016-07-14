@@ -24,4 +24,6 @@ gulp.task('watch', function() {
   gulp.watch('./client/app/**/*.js', ['lint', 'scripts']);
 });
 
+gulp.task('default', ['lint', 'scripts', 'watch']);
+
 
