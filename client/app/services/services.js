@@ -2,18 +2,17 @@ angular.module('Wordrly.services', [])
 
 .factory('words', function($http) {
   var currentList = {};
-  var defaultUser = 'dan';
-  var loadList = function() {
+  var loadList = function(currentUser) {
     return $http({
       method: 'POST',
       url: '/api/wordList/list',
       data: {
-        user: defaultUser
+        user: currentUser
       }
     }).then(function(response) {
       return response.data;
     }).catch(function(error) {
-      console.log("loadList Error: ", error);
+      console.log("loadList error: ", error);
     });
   };
 

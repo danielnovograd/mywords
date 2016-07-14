@@ -44,7 +44,8 @@ angular.module('Wordrly.lookups', [])
           return word.text; }),
         etymology: $scope.wordEtymology.map(function(entry) {
           return entry.etymology;
-      })
+        })
+      }
     }).then(function(response) {
       $scope.currentList = response.map(function(wordEntry) {
         return wordEntry.word;
@@ -66,13 +67,19 @@ angular.module('Wordrly.lookups', [])
     }
   };
 
-  $timeout(function(){while(!$scope.currentUser) {
-    $scope.currentUser = prompt("Please enter a username");
-  }}, 500);
-
-  words.loadList().then(function(response) {
-    $scope.currentList = response.map(function(wordEntry) {
-      return wordEntry.word;
-    }).sort();
-  });
+  $timeout(function(){
+    while(!$scope.currentUser) {
+      $scope.currentUser = prompt("Please enter a username");
+    }
+    words.loadList($scope.currentUser).then(function(response) {
+      if (response.length > 0) {
+        $scope.currentList = response.map(function(wordEntry) {
+          return wordEntry.word;
+        }).sort();
+      }
+      else {
+        $scope.currentList = [];
+      }
+    });
+  }, 400);
 });
