@@ -53,8 +53,8 @@ var etmyCall = function(data) {
 module.exports = {
 
   query: function(req, res) {
-    var first = dictCall(req.body.data);
-    var second = etmyCall(req.body.data);
+    var first = dictCall(req.body.wordQuery);
+    var second = etmyCall(req.body.wordQuery);
     Promise.all([
       first, second
     ]).then(function(results) {

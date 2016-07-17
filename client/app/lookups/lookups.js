@@ -1,13 +1,7 @@
 angular.module('Wordrly.lookups', [])
 
-.controller('lookups', function($scope, $http, words) {
+.controller('lookups', function($scope, $http, $timeout, words) {
   $scope.currentList = ['Loading'];
-
-  words.loadList().then(function(response) {
-    $scope.currentList = response.map(function(wordEntry) {
-      return wordEntry.word;
-    }).sort();
-  });
 
   $scope.showLookups = false;
   $scope.lookupList = words.lookupHistory;
@@ -16,7 +10,7 @@ angular.module('Wordrly.lookups', [])
 
   //input text search
   $scope.queryWord = function() {
-    words.queryWord($scope.targetWord)
+    words.queryWord($scope.targetWord.toLowerCase())
       .then(function(response) {
         $scope.currentWord = $scope.targetWord;
         $scope.wordDefinition = response.data[0];
@@ -43,12 +37,15 @@ angular.module('Wordrly.lookups', [])
 
   $scope.save = function(word) {
     words.saveToList({
-      word: word,
-      definition: $scope.wordDefinition.map(function(word) {
-        return word.text; }),
-      etymology: $scope.wordEtymology.map(function(entry) {
-        return entry.etymology;
-      })
+      user: $scope.currentUser,
+      wordObject: {
+        word: word,
+        definition: $scope.wordDefinition.map(function(word) {
+          return word.text; }),
+        etymology: $scope.wordEtymology.map(function(entry) {
+          return entry.etymology;
+        })
+      }
     }).then(function(response) {
       $scope.currentList = response.map(function(wordEntry) {
         return wordEntry.word;
@@ -57,7 +54,10 @@ angular.module('Wordrly.lookups', [])
   };
 
   $scope.delete = function(word) {
-    words.deleteFromList(word).then(function(response) {
+    words.deleteFromList({
+      user: $scope.currentUser,
+      word: word
+    }).then(function(response) {
       $scope.currentList = response.map(function(wordEntry) {
         return wordEntry.word;
       }).sort();
@@ -66,7 +66,24 @@ angular.module('Wordrly.lookups', [])
 
   $scope.clearList = function() {
     if (confirm("Are you sure you want to delete?")) {
-      $scope.currentList = words.clearList();
+      $scope.currentList = words.clearList($scope.currentUser);
     }
   };
+
+  $timeout(function(){
+    while(!$scope.currentUser) {
+      $scope.currentUser = prompt("Please enter a username");
+    }
+    words.loadList($scope.currentUser)
+    .then(function(response) {
+      if (response.length > 0) {
+        $scope.currentList = response.map(function(wordEntry) {
+          return wordEntry.word;
+        }).sort();
+      }
+      else {
+        $scope.currentList = [];
+      }
+    });
+  }, 400);
 });

@@ -2,12 +2,10 @@ var request = require('request');
 var Promise = require('bluebird');
 var savedWord = require('../db/models/savedLookups.js');
 
-var defaultUser = 'dan';
-
 module.exports = {
   saveList: function(req, res) {
     savedWord.findOneAndUpdate(
-      { user: { $eq: req.body.user } },
+      { user: { $eq: req.body.username } },
       { $push: { wordList: req.body.word } },
       {
         new: true,
@@ -19,18 +17,29 @@ module.exports = {
   },
 
   getList: function(req, res) {
-    savedWord.findOne({ user: { $eq: req.body.user } })
+    savedWord.findOne({ user: { $eq: req.body.username } })
       .then(function(userDoc) {
-        res.send(userDoc.wordList);
+        if(!userDoc) {
+          var newUser = new savedWord({
+            user: req.body.username,
+            wordList: []
+          });
+          newUser.save().then(function(user) {
+            res.status(204).send([]);
+          });
+        }
+        else {
+          res.send(userDoc.wordList);
+        }
       })
       .catch(function(error) {
-        res.send("getList error: ", error);
+        res.status(400).send(error);
       });
   },
 
   deleteWord: function(req, res) {
     savedWord.findOneAndUpdate(
-      { user: { $eq: req.body.user } },
+      { user: { $eq: req.body.username } },
       { $pull: { wordList: {word: req.body.word} } },
       { new: true })
       .then(function(userDoc) {
@@ -42,7 +51,7 @@ module.exports = {
 
   clearList: function(req, res) {
     savedWord.findOneAndUpdate(
-      { user: { $eq: defaultUser } },
+      { user: { $eq: req.body.username } },
       { wordList: [] })
       .then(function(userDoc) {
         res.send(userDoc.wordList);
