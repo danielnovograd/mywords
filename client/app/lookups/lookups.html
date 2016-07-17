@@ -16,7 +16,7 @@
     <div class="def">
       <h3>Definition</h3>
       <ul>
-        <li ng-repeat="def in wordDefinition">
+        <li ng-repeat="def in wordDefinition" ng-click="selectDefProperty(def)">
           <p><strong>{{def.partOfSpeech}}</strong> -- {{def.text}}</p>
         </li>
       </ul>

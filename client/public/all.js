@@ -22,21 +22,36 @@ angular.module('Wordrly.lookups', [])
   $scope.lookupList = words.lookupHistory;
   $scope.targetWord = '';
   $scope.currentWord = '';
-
+  $scope.selected = {
+    definitions: [],
+    etymologies: []
+  };
+  $scope.selectDefProperty = function(def) {
+    var defString = "(" + def.partOfSpeech + ") -- " + def.text;
+    if (!~$scope.selected.definitions.indexOf(defString)) {
+      $scope.selected.definitions.push(defString);
+    }
+    else {
+      $scope.selected.definitions.splice($scope.selected.definitions.indexOf(defString), 1);
+    }
+  };
   //input text search
   $scope.queryWord = function() {
-    words.queryWord($scope.targetWord.toLowerCase())
+    var wordQuery = $scope.targetWord.toLowerCase();
+    if (wordQuery !== $scope.currentWord) {
+    words.queryWord(wordQuery)
       .then(function(response) {
-        $scope.currentWord = $scope.targetWord;
+        $scope.currentWord = wordQuery;
         $scope.wordDefinition = response.data[0];
         $scope.wordEtymology = response.data[1];
         if ($scope.wordDefinition.length > 0 || $scope.wordEtymology.length > 0) {
-          if (!~$scope.lookupList.indexOf($scope.targetWord)) {
-            $scope.lookupList.push($scope.targetWord);
+          if (!~$scope.lookupList.indexOf(wordQuery)) {
+            $scope.lookupList.push(wordQuery);
           }
         }
         $scope.showLookups = true;
       });
+    }
   };
 
   //redo past query
@@ -55,7 +70,7 @@ angular.module('Wordrly.lookups', [])
       user: $scope.currentUser,
       wordObject: {
         word: word,
-        definition: $scope.wordDefinition.map(function(word) {
+        definition: $scope.selected.definitions || $scope.wordDefinition.map(function(word) {
           return word.text; }),
         etymology: $scope.wordEtymology.map(function(entry) {
           return entry.etymology;
@@ -65,6 +80,7 @@ angular.module('Wordrly.lookups', [])
       $scope.currentList = response.map(function(wordEntry) {
         return wordEntry.word;
       }).sort();
+      $scope.selected.definition = [];
     });
   };
 
