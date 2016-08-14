@@ -10,14 +10,15 @@ angular.module('Wordrly.lookups', [])
 
   //input text search
   $scope.queryWord = function() {
-    words.queryWord($scope.targetWord.toLowerCase())
+    var queriedWord = $scope.targetWord.toLowerCase();
+    words.queryWord(queriedWord)
       .then(function(response) {
         $scope.currentWord = $scope.targetWord;
         $scope.wordDefinition = response.data[0];
         $scope.wordEtymology = response.data[1];
         if ($scope.wordDefinition.length > 0 || $scope.wordEtymology.length > 0) {
-          if (!~$scope.lookupList.indexOf($scope.targetWord)) {
-            $scope.lookupList.push($scope.targetWord);
+          if (!~$scope.lookupList.indexOf(queriedWord)) {
+            $scope.lookupList.push(queriedWord);
           }
         }
         $scope.showLookups = true;
