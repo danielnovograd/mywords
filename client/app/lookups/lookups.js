@@ -70,7 +70,8 @@ angular.module('Wordrly.lookups', [])
       $scope.currentList = words.clearList($scope.currentUser);
     }
   };
-  $scope.changeUser = function() {
+
+  $scope.loadUser = function() {
     $scope.currentUser = '';
     while(!$scope.currentUser) {
       $scope.currentUser = prompt("Please enter a username");
@@ -88,20 +89,5 @@ angular.module('Wordrly.lookups', [])
     });
   };
 
-  $timeout(function(){
-    while(!$scope.currentUser) {
-      $scope.currentUser = prompt("Please enter a username");
-    }
-    words.loadList($scope.currentUser)
-    .then(function(response) {
-      if (response.length > 0) {
-        $scope.currentList = response.map(function(wordEntry) {
-          return wordEntry.word;
-        }).sort();
-      }
-      else {
-        $scope.currentList = [];
-      }
-    });
-  }, 400);
+  $timeout($scope.loadUser, 400);
 });
