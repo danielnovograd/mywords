@@ -28,7 +28,6 @@
 }*/
 header {
   display: block;
-  position: fixed;
 }
 .save-button {
   display: none;
