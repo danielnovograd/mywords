@@ -47,14 +47,7 @@
             <a href="" ng-click="pastLookup(word)">{{word}}</a>
             <button class="delete-button" ng-click="delete(word)">Delete from your list</button>
         </li>
-
-
   </div>
-  <script type="text/ng-template" id="/home.html">
-    <div class="page-header">
-      <h1 style="font-family: Josefin">Wordrly</h1>
-    </div>
-  </script>
   <script>
     $('.searchHistory').on("mouseenter", ".past-word", function() {
         $(this).children('.save-button').toggle()
