@@ -4,6 +4,7 @@ var jshint = require('gulp-jshint');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var ngAnnotate = require('gulp-ng-annotate')
 
 gulp.task('lint', function() {
   return gulp.src(['./client/app/**/*.js', './server/**/*.js'])
@@ -16,7 +17,8 @@ gulp.task('scripts', function() {
     .pipe(concat('all.js'))
     .pipe(gulp.dest('client/public'))
     .pipe(rename('all.min.js'))
-    .pipe(uglify({mangle: false}))
+    .pipe(ngAnnotate())
+    .pipe(uglify())
     .pipe(gulp.dest('client/public'));
 });
 
