@@ -1,7 +1,7 @@
 angular.module('Wordrly.lookups', [])
 
 .controller('lookups', function($scope, $http, $timeout, words) {
-  $scope.currentList = ['Loading'];
+  $scope.currentList = ['Loading...'];
 
   $scope.showLookups = false;
   $scope.lookupList = words.lookupHistory;
@@ -84,6 +84,23 @@ angular.module('Wordrly.lookups', [])
     if (confirm("Are you sure you want to delete?")) {
       $scope.currentList = words.clearList($scope.currentUser);
     }
+  };
+  $scope.changeUser = function() {
+    $scope.currentUser = '';
+    while(!$scope.currentUser) {
+      $scope.currentUser = prompt("Please enter a username");
+    }
+    words.loadList($scope.currentUser)
+    .then(function(response) {
+      if (response.length > 0) {
+        $scope.currentList = response.map(function(wordEntry) {
+          return wordEntry.word;
+        }).sort();
+      }
+      else {
+        $scope.currentList = [];
+      }
+    });
   };
 
   $timeout(function(){
