@@ -22,16 +22,26 @@ angular.module('Wordrly.lookups', [])
   };
   //input text search
   $scope.queryWord = function() {
+<<<<<<< 2bc1ef1682533a68c39796b301a57359f7c47a55
     var wordQuery = $scope.targetWord.toLowerCase();
     if (wordQuery !== $scope.currentWord) {
     words.queryWord(wordQuery)
+=======
+    var queriedWord = $scope.targetWord.toLowerCase();
+    words.queryWord(queriedWord)
+>>>>>>> (feat) Convert queries to lowercase
       .then(function(response) {
         $scope.currentWord = wordQuery;
         $scope.wordDefinition = response.data[0];
         $scope.wordEtymology = response.data[1];
         if ($scope.wordDefinition.length > 0 || $scope.wordEtymology.length > 0) {
+<<<<<<< 2bc1ef1682533a68c39796b301a57359f7c47a55
           if (!~$scope.lookupList.indexOf(wordQuery)) {
             $scope.lookupList.push(wordQuery);
+=======
+          if (!~$scope.lookupList.indexOf(queriedWord)) {
+            $scope.lookupList.push(queriedWord);
+>>>>>>> (feat) Convert queries to lowercase
           }
         }
         $scope.showLookups = true;
