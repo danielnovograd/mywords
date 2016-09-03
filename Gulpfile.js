@@ -29,4 +29,5 @@ gulp.task('watch', function() {
 
 gulp.task('default', ['lint', 'scripts', 'watch']);
 
+gulp.task('default', ['scripts'])
 
