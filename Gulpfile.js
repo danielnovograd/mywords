@@ -4,6 +4,7 @@ var jshint = require('gulp-jshint');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var connect = require('gulp-connect');
 var ngAnnotate = require('gulp-ng-annotate')
 
 gulp.task('lint', function() {
@@ -22,10 +23,18 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('client/public'));
 });
 
+gulp.task('prodServer', function(){
+  connect.server({
+    root: __dirname +"/client",
+    port: process.env.PORT || 5000,
+    livereload: false
+  });
+});
+
 gulp.task('watch', function() {
   gulp.watch(['./client/app/**/*.js', './server/**/*.js'], ['lint', 'scripts']);
 });
-
+gulp.task('build', ['scripts', 'prodServer']);
 gulp.task('default', ['lint', 'scripts', 'watch']);
 
 
