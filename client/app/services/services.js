@@ -10,7 +10,7 @@ angular.module('Wordrly.services', [])
         username: currentUser
       })
     }).then(function(response) {
-      return response.data;
+      return response.data || [];
     }).catch(function(error) {
       console.log("loadList error: ", error);
     });
