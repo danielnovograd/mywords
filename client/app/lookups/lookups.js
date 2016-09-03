@@ -36,8 +36,7 @@ angular.module('Wordrly.lookups', [])
         }
         $scope.showLookups = true;
       });
-    }
-  };
+    };
 
   //redo past query
   $scope.pastLookup = function(word) {

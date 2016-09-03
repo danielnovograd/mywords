@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "nodemon server/index.js",
-    "postinstall": "npm install && gulp build"
+    "postinstall": "npm install && gulp scripts"
   },
   "repository": {
     "type": "git",
